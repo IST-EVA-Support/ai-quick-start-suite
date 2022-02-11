@@ -78,12 +78,12 @@ gstmeta_dep = declare_dependency(
 
   
 # Plugin geofence
-plugin_sources = ['gstopchecktime.cpp', '../utils/utils.cpp', 'gstopcheck.cpp']
+plugin_sources = ['gstopchecktime.cpp', '../../utils/utils.cpp', 'gstopcheck.cpp']
 
 adedge = library('opcheck',
   plugin_sources,
   #cpp_args: plugin_cpp_args,
-  include_directories : [join_paths('..', 'utils')],
+  include_directories : [join_paths('..', '..', 'utils')],
   dependencies : [gst, gst_base, gst_video, cv_dep, gstmeta_dep],
   #install : true,
   #install_dir : plugins_install_dir,
