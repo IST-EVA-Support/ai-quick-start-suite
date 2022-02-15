@@ -549,7 +549,7 @@ static void drawAlertArea(GstOpchecktime *opchecktime)
     {
         int lineType = cv::LINE_8;
         int pt_num = opchecktime->priv->area_point_vec.size();
-        cv::Scalar color = opchecktime->priv->alert == true ? cv::Scalar(0, 0, 255) : cv::Scalar(255, 0, 0);
+        cv::Scalar color = cv::Scalar(255, 0, 0);
         int thickness = opchecktime->priv->alert == true ? 6 : 2;
         for(int i = 0; i < pt_num; ++i)
             cv::line(opchecktime->srcMat, opchecktime->priv->area_point_vec[i%pt_num], opchecktime->priv->area_point_vec[(i+1)%pt_num], color, thickness, lineType);
