@@ -35,7 +35,7 @@ This scenario required to install EVASDK in the device. After installing the EVA
 2. Make the build script executable if needed.
 
    ```
-   $ sudo chmod +x opcheck-build.sh 
+   $ sudo chmod +x tankcar-build.sh
    ```
 
    This step is just make sure you have the execute permission for this script.
