@@ -27,7 +27,7 @@ This scenario required to install EVASDK in the device. After installing the EVA
 1. Path to the folder of this scenario. Assume that you clone this source code in Home folder.
 
    ```
-   $ ~/ai-quick-start-suite/src/operation-idle-monitoring
+   $ cd ~/ai-quick-start-suite/src/operation-idle-monitoring
    ```
 
    If you clone in another path, please path to folder "operation-idle-monitoring".
@@ -72,7 +72,7 @@ There exists two test optimized models for JNX(NVIDIA NX) in /ai-quick-start-sui
 
 2. ssdv2.engine for product object detection 
 
-   (if you are using other architecture, you can optimize it through EVASDK usermanual by using /ai-quick-start-suite/src/operation-idle-monitoring/misc/ssd2017.uff)
+   (if you are using other architecture, you can optimize it through EVASDK user manual by using /ai-quick-start-suite/src/operation-idle-monitoring/misc/ssd2017.uff)
 
 and other required materials needed in /ai-quick-start-suite/src/operation-idle-monitoring/NX:
 
