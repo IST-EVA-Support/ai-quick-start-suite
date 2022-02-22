@@ -9,4 +9,5 @@ This repository is focusing on demonstrating "simple", "generic" and "quick" GSt
 In this AI quick start suite, contains:
 
 1. [Operation Idle Monitoring, OIM](src/operation-idle-monitoring);
+2. [Chemical Tank Car](src/chemical-tank-car);
 
