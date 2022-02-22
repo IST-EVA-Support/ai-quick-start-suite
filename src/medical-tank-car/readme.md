@@ -1,4 +1,4 @@
-# Medical Tank Car
+# Chemical Tank Car
 
 Security check is one of the most concerned issue in manufacture, especially for the area checking. For instance, most of the area expressly stipulated the standard protection guardrail. This kind of the protection must placed before operating. Checking irregular placement can remind the operator amend the status.
 
@@ -27,10 +27,10 @@ This scenario required to install EVASDK in the device. After installing the EVA
 1. Path to the folder of this scenario. Assume that you clone this source code in Home folder.
 
    ```
-   $ cd ~/ai-quick-start-suite/src/medical-tank-car
+   $ cd ~/ai-quick-start-suite/src/chemical-tank-car
    ```
 
-   If you clone in another path, please path to folder "medical-tank-car".
+   If you clone in another path, please path to folder "chemical-tank-car".
 
 2. Make the build script executable if needed.
 
@@ -66,14 +66,14 @@ This plugin, geocheck, contains one feature called geocheck. you can use the com
 
 ## Run the plugin
 
-There exists one test optimized models for JNX(NVIDIA NX) in /ai-quick-start-suite/src/medical-tank-car/NX:
+There exists one test optimized models for JNX(NVIDIA NX) in /ai-quick-start-suite/src/chemical-tank-car/NX:
 
 1. yolov4-tiny-608.engine for pose detection
 
-   (if you are using other architecture, you can optimize it through EVASDK user manual by using /ai-quick-start-suite/src/medical-tank-car/misc/yolov4-tiny-608.onnx)
+   (if you are using other architecture, you can optimize it through EVASDK user manual by using /ai-quick-start-suite/src/chemical-tank-car/misc/yolov4-tiny-608.onnx)
 
 
-and other required materials needed in /ai-quick-start-suite/src/medical-tank-car/NX:
+and other required materials needed in /ai-quick-start-suite/src/chemical-tank-car/NX:
 
 1. area.txt 
 
