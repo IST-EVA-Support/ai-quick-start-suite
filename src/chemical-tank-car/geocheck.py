@@ -10,13 +10,14 @@ import gst_admeta as admeta
 
 from gi.repository import Gst, GObject, GLib, GstVideo
 
-def check_inside_area(img, object_boxes, obj_name, area_points, display):
+def check_inside_area(img, object_boxes, obj_name, limit_num, area_points, display):
 	alert = False
 	
 	h, w, c = img.shape
 	face = cv2.FONT_HERSHEY_COMPLEX
 	scale = 0.75
 	thickness = 2
+	exist_num = 0
 	
 	for box in object_boxes:
 		l =  box.obj_label.decode("utf-8").strip() if box.obj_label.decode("utf-8").strip() != '' else str(box.class_id)
@@ -25,12 +26,19 @@ def check_inside_area(img, object_boxes, obj_name, area_points, display):
 			object_points = [[x1, y1], [x2, y1], [x2, y2], [x1, y2]]
 			intersect_area, chain = cv2.intersectConvexConvex(np.array(area_points), np.array(object_points))
 			if intersect_area > 0:
-				alert = True
+				exist_num = exist_num + 1
+				#alert = True
 			if display == True:
 				size = cv2.getTextSize(l, face, scale, thickness+1)
 				cv2.rectangle(img, (x1, y1), (x2, y2), (255, 255, 0), thickness)
 				cv2.rectangle(img, (x1, y1), (x1+size[0][0], y1+size[0][1]+size[1]), (255, 255, 255), -1)
 				cv2.putText(img, l, (x1, y1 + size[0][1]), face, scale, (0, 0, 255), thickness+1)
+	if limit_num >= 0:
+		if exist_num != limit_num:
+			alert = True
+	else:
+		if exist_num == (limit_num * -1):
+			alert = True
 	return alert
 
 def gst_video_caps_make(fmt):
@@ -78,6 +86,11 @@ class GeoCheck(Gst.Element):
                            "The object name that can not appear in the area.",
                            "",
                            GObject.ParamFlags.READWRITE),
+            "limit-num": (int, 
+                           "limit-num",
+                           "The object number that can or cannot appear in the area. limit-num < 0 means cannot exist specific number of the object; limit-num = 0 means cannot exist the object; limit-num > 0 means can exist specific number of the object.",
+                           -1000, 1000, 0,
+                           GObject.ParamFlags.READWRITE),
             "display": (bool,
                         "display",
                         "Display the defined area in frame",
@@ -90,6 +103,7 @@ class GeoCheck(Gst.Element):
 			self.alert_area_def_path = ""
 			self.alert_type = "alert"
 			self.object_name = ""
+			self.limit_num = 0
 			self.display = True
 			self.area_points = []
 			self.parsed = False
@@ -120,6 +134,8 @@ class GeoCheck(Gst.Element):
 				return self.alert_type
 			elif prop.name == 'object-name':
 				return self.object_name
+			elif prop.name == 'limit-num':
+				return self.limit_num
 			elif prop.name == 'display':
 				return self.display
 			else:
@@ -142,6 +158,8 @@ class GeoCheck(Gst.Element):
 				self.alert_type = str(value)
 			elif prop.name == 'object-name':
 				self.object_name = str(value)
+			elif prop.name == 'limit-num':
+				self.limit_num = int(value)
 			elif prop.name == 'display':
 				self.display = bool(value)
 			else :
@@ -171,11 +189,11 @@ class GeoCheck(Gst.Element):
 				for i in range(point_n):
 					self.area_points[i][0] = int(self.area_points[i][0]*width)
 					self.area_points[i][1] = int(self.area_points[i][1]*height)
-				print(self.area_points)
+				#print(self.area_points)
 				self.parsed = True
             
             # Check if object is in the area  
-			alert = check_inside_area(img, object_boxes, self.object_name, self.area_points, self.display)
+			alert = check_inside_area(img, object_boxes, self.object_name, self.limit_num, self.area_points, self.display)
 			
 			if self.display == True:
 				for i in range(point_n):
