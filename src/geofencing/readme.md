@@ -51,5 +51,5 @@ You will see the following result displayed:
 
 ![displayed screen](../../resources/geofencing-event.jpg)
 
-Illustrated red area denotes the pre-defied ara provide by user. The person's foot is the target that can not occur in the area. This object name can be set int the property, object-name, of the plugin. This scenario can widely extended to any situation that illegal object is trained in the model and check whether it is appear in the area or not.
+Illustrated red area denotes the pre-defied ara provide by user. The person's foot is the target that can not occur in the area. This object name can set in the property, object-name, of the plugin. The other property, limit-num, can set the object number that can or cannot appear in the area. limit-num < 0 means cannot exist specific number of the object; limit-num = 0 means cannot exist the object; limit-num > 0 means can exist specific number of the object. This scenario can widely extended to any situation that illegal object is trained in the model and check whether it is appear in the area or not.
 
