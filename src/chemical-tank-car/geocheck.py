@@ -36,9 +36,9 @@ def check_inside_area(img, object_boxes, obj_name, limit_num, area_points, displ
 	if limit_num >= 0:
 		if exist_num != limit_num:
 			alert = True
-	else:
-		if exist_num == (limit_num * -1):
-			alert = True
+	#else:
+		#if exist_num == (limit_num * -1):
+			#alert = True
 	return alert
 
 def gst_video_caps_make(fmt):
@@ -88,8 +88,8 @@ class GeoCheck(Gst.Element):
                            GObject.ParamFlags.READWRITE),
             "limit-num": (int, 
                            "limit-num",
-                           "The object number that can or cannot appear in the area. limit-num < 0 means cannot exist specific number of the object; limit-num = 0 means cannot exist the object; limit-num > 0 means can exist specific number of the object.",
-                           -1000, 1000, 0,
+                           "The object number that can or cannot appear in the area. The limit-num = 0 means cannot exist the object; limit-num > 0 means can exist specific number of the object.",
+                           0, 1000, 0,
                            GObject.ParamFlags.READWRITE),
             "display": (bool,
                         "display",
