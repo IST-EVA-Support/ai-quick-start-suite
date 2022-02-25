@@ -55,8 +55,8 @@ if __name__ == '__main__':
     # Define the record pipeline here
     commands = {
         "v4l2":"v4l2src ! videoconvert ! videoscale ! video/x-raw,width=" + str(width) + ",height=" + str(height) + " ! tee name=t ! queue ! x264enc tune=zerolatency ! mp4mux ! filesink location=" + file_name + " t. ! queue ! textoverlay text=Recording valignment=top halignment=left font-desc=\"Sans, 20\" ! videoconvert ! ximagesink",
-        "pylon":"pylonsrc pixel-format=BayerRG8 width=" + str(width) + " height=" + str(height) + " fps=7 ! tee name=t ! queue ! autovideosink t. ! x264enc ! mp4mux ! filesink location=" + file_name + " t. ! queue ! textoverlay text=Recording valignment=top halignment=left font-desc=\"Sans, 20\" ! videoconvert ! ximagesink",
-        "test":"videotestsrc pattern=18 ! autovideosink"
+        "pylon":"pylonsrc width=" + str(width) + " height=" + str(height) + " ! videoconvert ! tee name=t ! queue ! x264enc tune=zerolatency ! mp4mux ! filesink location=" + file_name + " t. ! queue ! textoverlay text=Recording valignment=top halignment=left font-desc=\"Sans, 20\" ! videoconvert ! ximagesink",
+        "demo":"videotestsrc pattern=18 ! autovideosink"
         }
     
     # Initialize GStreamer
@@ -66,7 +66,7 @@ if __name__ == '__main__':
     if sys.argv[1] in commands:
         pipeline_command = commands[sys.argv[1]]
     else:
-        pipeline_command = commands["error"]
+        print("record command does not exist.")
         sys.exit()
     print('your command:\n', pipeline_command)
     
