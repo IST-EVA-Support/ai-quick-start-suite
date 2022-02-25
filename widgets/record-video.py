@@ -2,6 +2,7 @@ import sys
 import gi
 gi.require_version('Gst', '1.0')
 from gi.repository import Gst, GObject
+from datetime import datetime
 
 
 def intTryParse(value):
@@ -48,10 +49,13 @@ if __name__ == '__main__':
         else:
             height = n
     
+    file_name = datetime.today().strftime("%Y-%m-%d-%H-%M-%S") + ".mp4"
+    print("save to file: ", file_name)
+    
     # Define the record pipeline here
     commands = {
-        "v4l2":"v4l2src ! videoconvert ! videoscale ! video/x-raw,width=" + str(width) + ",height=" + str(height) + " ! tee name=t ! queue ! x264enc tune=zerolatency ! mp4mux ! filesink location=video.mp4 t. ! queue ! textoverlay text=Recording valignment=top halignment=left font-desc=\"Sans, 20\" ! videoconvert ! ximagesink",
-        "pylon":"pylonsrc pixel-format=BayerRG8 width=" + str(width) + " height=" + str(height) + " fps=7 ! tee name=t ! queue ! autovideosink t. ! x264enc ! mp4mux ! filesink location=video.mp4",
+        "v4l2":"v4l2src ! videoconvert ! videoscale ! video/x-raw,width=" + str(width) + ",height=" + str(height) + " ! tee name=t ! queue ! x264enc tune=zerolatency ! mp4mux ! filesink location=" + file_name + " t. ! queue ! textoverlay text=Recording valignment=top halignment=left font-desc=\"Sans, 20\" ! videoconvert ! ximagesink",
+        "pylon":"pylonsrc pixel-format=BayerRG8 width=" + str(width) + " height=" + str(height) + " fps=7 ! tee name=t ! queue ! autovideosink t. ! x264enc ! mp4mux ! filesink location=" + file_name + " t. ! queue ! textoverlay text=Recording valignment=top halignment=left font-desc=\"Sans, 20\" ! videoconvert ! ximagesink",
         "test":"videotestsrc pattern=18 ! autovideosink"
         }
     
