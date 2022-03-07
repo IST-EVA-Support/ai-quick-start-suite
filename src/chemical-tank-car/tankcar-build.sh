@@ -32,6 +32,10 @@ else
     message_out "/opt/adlink/eva/plugins/python/geocheck.py does not exist, will copy it"
 fi
 
+# install requirement dependency
+message_out "install python require package for this plugin......"
+pip3 install shapely
+
 # copy python plugin to eva plugins python folder
 message_out "start copying to /opt/adlink/eva/plugins/python ......"
 sudo cp ./geocheck.py /opt/adlink/eva/plugins/python/.
