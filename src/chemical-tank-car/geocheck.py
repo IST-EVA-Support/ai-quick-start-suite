@@ -2,6 +2,7 @@ import ctypes
 import numpy as np
 import time
 from datetime import datetime
+from shapely.geometry import Polygon
 
 import cv2
 import gst_helper
@@ -24,15 +25,16 @@ def check_inside_area(img, object_boxes, obj_name, limit_num, area_points, displ
 		if l == obj_name:
 			x1, x2, y1, y2 = int(box.x1*w), int(box.x2*w), int(box.y1*h), int(box.y2*h)
 			object_points = [[x1, y1], [x2, y1], [x2, y2], [x1, y2]]
-			intersect_area, chain = cv2.intersectConvexConvex(np.array(area_points), np.array(object_points))
-			if intersect_area > 0:
+			p = Polygon(object_points)
+			q = Polygon(area_points)
+			if p.intersects(q) == True:
 				exist_num = exist_num + 1
-				#alert = True
 			if display == True:
 				size = cv2.getTextSize(l, face, scale, thickness+1)
 				cv2.rectangle(img, (x1, y1), (x2, y2), (255, 255, 0), thickness)
 				cv2.rectangle(img, (x1, y1), (x1+size[0][0], y1+size[0][1]+size[1]), (255, 255, 255), -1)
 				cv2.putText(img, l, (x1, y1 + size[0][1]), face, scale, (0, 0, 255), thickness+1)
+	print("exist_num = ", exist_num)
 	if limit_num >= 0:
 		if exist_num != limit_num:
 			alert = True
