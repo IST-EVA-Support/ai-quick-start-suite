@@ -34,7 +34,6 @@ def check_inside_area(img, object_boxes, obj_name, limit_num, area_points, displ
 				cv2.rectangle(img, (x1, y1), (x2, y2), (255, 255, 0), thickness)
 				cv2.rectangle(img, (x1, y1), (x1+size[0][0], y1+size[0][1]+size[1]), (255, 255, 255), -1)
 				cv2.putText(img, l, (x1, y1 + size[0][1]), face, scale, (0, 0, 255), thickness+1)
-	print("exist_num = ", exist_num)
 	if limit_num >= 0:
 		if exist_num != limit_num:
 			alert = True
