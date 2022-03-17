@@ -146,7 +146,10 @@ class GeoCheck(Gst.Element):
 		def do_set_property(self, prop: GObject.GParamSpec, value):
 			if prop.name == 'alert-area-def':
 				self.alert_area_def_path = str(value)	
-				#print('start loading ', self.alert_area_def_path, '...')
+				#print('start loading area definition file:', self.alert_area_def_path, '...')
+				# Reset list and parse flag
+				self.area_points.clear()
+				self.parsed = False
 				f = open(self.alert_area_def_path)
 				for line in f:
 					mystr = line.strip()
