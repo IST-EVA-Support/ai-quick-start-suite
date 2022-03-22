@@ -229,6 +229,19 @@ class GeoCheck(Gst.Element):
 
 		def srceventfunc(self, pad: Gst.Pad, parent, event: Gst.Event) -> bool:
 			return self.sinkpad.push_event(event)	
+        
+		def do_state_changed(self, oldstate: Gst.State, newstate: Gst.State, pending: Gst.State):
+			if newstate == Gst.State.PLAYING:
+				# Reset list and parse flag
+				self.area_points.clear()
+				self.parsed = False
+				f = open(self.alert_area_def_path)
+				for line in f:
+					mystr = line.strip()
+					x, y = mystr.split(',')
+					self.area_points.append([float(x), float(y)])
+				#print(self.area_points)
+				f.close()
 
 # Register plugin to use it from command line
 GObject.type_register(GeoCheck)
