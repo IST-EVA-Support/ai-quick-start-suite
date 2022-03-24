@@ -13,28 +13,29 @@ from gi.repository import Gst, GObject, GLib, GstVideo
 
 def check_inside_area(img, object_boxes, obj_name, limit_num, area_points, display):
 	alert = False
-	print ("abcc")
 	
 	h, w, c = img.shape
 	face = cv2.FONT_HERSHEY_COMPLEX
 	scale = 0.75
 	thickness = 2
 	exist_num = 0
-	
+	obj_list=obj_name.split(',')
+
 	for box in object_boxes:
 		l =  box.obj_label.decode("utf-8").strip() if box.obj_label.decode("utf-8").strip() != '' else str(box.class_id)
-		if l == obj_name:
-			x1, x2, y1, y2 = int(box.x1*w), int(box.x2*w), int(box.y1*h), int(box.y2*h)
-			object_points = [[x1, y1], [x2, y1], [x2, y2], [x1, y2]]
-			p = Polygon(object_points)
-			q = Polygon(area_points)
-			if p.intersects(q) == True:
-				exist_num = exist_num + 1
-			if display == True:
-				size = cv2.getTextSize(l, face, scale, thickness+1)
-				cv2.rectangle(img, (x1, y1), (x2, y2), (255, 255, 0), thickness)
-				cv2.rectangle(img, (x1, y1), (x1+size[0][0], y1+size[0][1]+size[1]), (255, 255, 255), -1)
-				cv2.putText(img, l, (x1, y1 + size[0][1]), face, scale, (0, 0, 255), thickness+1)
+		for objName in obj_list:
+			if l == objName:
+				x1, x2, y1, y2 = int(box.x1*w), int(box.x2*w), int(box.y1*h), int(box.y2*h)
+				object_points = [[x1, y1], [x2, y1], [x2, y2], [x1, y2]]
+				p = Polygon(object_points)
+				q = Polygon(area_points)
+				if p.intersects(q) == True:
+					exist_num = exist_num + 1
+				if display == True:
+					size = cv2.getTextSize(l, face, scale, thickness+1)
+					cv2.rectangle(img, (x1, y1), (x2, y2), (255, 255, 0), thickness)
+					cv2.rectangle(img, (x1, y1), (x1+size[0][0], y1+size[0][1]+size[1]), (255, 255, 255), -1)
+					cv2.putText(img, l, (x1, y1 + size[0][1]), face, scale, (0, 0, 255), thickness+1)
 	if limit_num >= 0:
 		if exist_num != limit_num:
 			alert = True
@@ -147,10 +148,7 @@ class GeoCheck(Gst.Element):
 		def do_set_property(self, prop: GObject.GParamSpec, value):
 			if prop.name == 'alert-area-def':
 				self.alert_area_def_path = str(value)	
-				#print('start loading area definition file:', self.alert_area_def_path, '...')
-				# Reset list and parse flag
-				self.area_points.clear()
-				self.parsed = False
+				#print('start loading ', self.alert_area_def_path, '...')
 				f = open(self.alert_area_def_path)
 				for line in f:
 					mystr = line.strip()
@@ -216,6 +214,12 @@ class GeoCheck(Gst.Element):
 				arr = []
 				arr.append(admeta._DetectionBox(0, 0, 0, 0,0.1,0.2,0.3,0.4,0.5, messsageStr))
 				admeta.set_detection_box(buff, pad, arr)
+			else:
+				messsageStr ="none"
+				arr = []
+				arr.append(admeta._DetectionBox(0, 0, 0, 0,0.1,0.2,0.3,0.4,0.5, messsageStr))
+				admeta.set_detection_box(buff, pad, arr)
+                                
 			
 			return self.srcpad.push(buff)
 
@@ -230,19 +234,6 @@ class GeoCheck(Gst.Element):
 
 		def srceventfunc(self, pad: Gst.Pad, parent, event: Gst.Event) -> bool:
 			return self.sinkpad.push_event(event)	
-        
-		def do_state_changed(self, oldstate: Gst.State, newstate: Gst.State, pending: Gst.State):
-			if newstate == Gst.State.PLAYING:
-				# Reset list and parse flag
-				self.area_points.clear()
-				self.parsed = False
-				f = open(self.alert_area_def_path)
-				for line in f:
-					mystr = line.strip()
-					x, y = mystr.split(',')
-					self.area_points.append([float(x), float(y)])
-				#print(self.area_points)
-				f.close()
 
 # Register plugin to use it from command line
 GObject.type_register(GeoCheck)
