@@ -13,6 +13,7 @@ from gi.repository import Gst, GObject, GLib, GstVideo
 
 def check_inside_area(img, object_boxes, obj_name, limit_num, area_points, display):
 	alert = False
+	print ("abcc")
 	
 	h, w, c = img.shape
 	face = cv2.FONT_HERSHEY_COMPLEX
