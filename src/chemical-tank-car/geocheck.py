@@ -20,7 +20,7 @@ def check_inside_area(img, object_boxes, obj_name, limit_num, area_points, displ
 	thickness = 2
 	exist_num = 0
 	obj_list=obj_name.split(',')
-
+	
 	for box in object_boxes:
 		l =  box.obj_label.decode("utf-8").strip() if box.obj_label.decode("utf-8").strip() != '' else str(box.class_id)
 		for objName in obj_list:
@@ -148,7 +148,10 @@ class GeoCheck(Gst.Element):
 		def do_set_property(self, prop: GObject.GParamSpec, value):
 			if prop.name == 'alert-area-def':
 				self.alert_area_def_path = str(value)	
-				#print('start loading ', self.alert_area_def_path, '...')
+				#print('start loading area definition file:', self.alert_area_def_path, '...')
+				# Reset list and parse flag
+				self.area_points.clear()
+				self.parsed = False
 				f = open(self.alert_area_def_path)
 				for line in f:
 					mystr = line.strip()
@@ -214,12 +217,12 @@ class GeoCheck(Gst.Element):
 				arr = []
 				arr.append(admeta._DetectionBox(0, 0, 0, 0,0.1,0.2,0.3,0.4,0.5, messsageStr))
 				admeta.set_detection_box(buff, pad, arr)
+
 			else:
 				messsageStr ="none"
 				arr = []
 				arr.append(admeta._DetectionBox(0, 0, 0, 0,0.1,0.2,0.3,0.4,0.5, messsageStr))
 				admeta.set_detection_box(buff, pad, arr)
-                                
 			
 			return self.srcpad.push(buff)
 
@@ -234,6 +237,19 @@ class GeoCheck(Gst.Element):
 
 		def srceventfunc(self, pad: Gst.Pad, parent, event: Gst.Event) -> bool:
 			return self.sinkpad.push_event(event)	
+        
+		def do_state_changed(self, oldstate: Gst.State, newstate: Gst.State, pending: Gst.State):
+			if newstate == Gst.State.PLAYING:
+				# Reset list and parse flag
+				self.area_points.clear()
+				self.parsed = False
+				f = open(self.alert_area_def_path)
+				for line in f:
+					mystr = line.strip()
+					x, y = mystr.split(',')
+					self.area_points.append([float(x), float(y)])
+				#print(self.area_points)
+				f.close()
 
 # Register plugin to use it from command line
 GObject.type_register(GeoCheck)
