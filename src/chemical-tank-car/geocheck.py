@@ -2,7 +2,6 @@ import ctypes
 import numpy as np
 import time
 from datetime import datetime
-from shapely.geometry import Polygon
 
 import cv2
 import gst_helper
@@ -21,15 +20,28 @@ def check_inside_area(img, object_boxes, obj_name, limit_num, area_points, displ
 	exist_num = 0
 	obj_list=obj_name.split(',')
 	
+	stencil = np.zeros(img.shape).astype(img.dtype)
+	contours = [np.array(area_points)]
+	color = [255, 255, 255]
+	cv2.fillPoly(stencil, contours, color)
+	area_img = cv2.bitwise_and(img, stencil)
+	
 	for box in object_boxes:
 		l =  box.obj_label.decode("utf-8").strip() if box.obj_label.decode("utf-8").strip() != '' else str(box.class_id)
 		for objName in obj_list:
 			if l == objName:
 				x1, x2, y1, y2 = int(box.x1*w), int(box.x2*w), int(box.y1*h), int(box.y2*h)
 				object_points = [[x1, y1], [x2, y1], [x2, y2], [x1, y2]]
-				p = Polygon(object_points)
-				q = Polygon(area_points)
-				if p.intersects(q) == True:
+				
+				stencil = np.zeros(img.shape).astype(img.dtype)
+				contours = [np.array(object_points)]
+				color = [255, 255, 255]
+				cv2.fillPoly(stencil, contours, color)
+				obj_img = cv2.bitwise_and(img, stencil)
+				
+				intersectNum = np.sum(np.logical_and(area_img, obj_img))
+
+				if intersectNum > 0:
 					exist_num = exist_num + 1
 				if display == True:
 					size = cv2.getTextSize(l, face, scale, thickness+1)
