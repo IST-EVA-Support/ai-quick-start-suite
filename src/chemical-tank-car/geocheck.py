@@ -19,21 +19,23 @@ def check_inside_area(img, object_boxes, obj_name, limit_num, area_points, displ
 	scale = 0.75
 	thickness = 2
 	exist_num = 0
+	obj_list=obj_name.split(',')
 	
 	for box in object_boxes:
 		l =  box.obj_label.decode("utf-8").strip() if box.obj_label.decode("utf-8").strip() != '' else str(box.class_id)
-		if l == obj_name:
-			x1, x2, y1, y2 = int(box.x1*w), int(box.x2*w), int(box.y1*h), int(box.y2*h)
-			object_points = [[x1, y1], [x2, y1], [x2, y2], [x1, y2]]
-			p = Polygon(object_points)
-			q = Polygon(area_points)
-			if p.intersects(q) == True:
-				exist_num = exist_num + 1
-			if display == True:
-				size = cv2.getTextSize(l, face, scale, thickness+1)
-				cv2.rectangle(img, (x1, y1), (x2, y2), (255, 255, 0), thickness)
-				cv2.rectangle(img, (x1, y1), (x1+size[0][0], y1+size[0][1]+size[1]), (255, 255, 255), -1)
-				cv2.putText(img, l, (x1, y1 + size[0][1]), face, scale, (0, 0, 255), thickness+1)
+		for objName in obj_list:
+			if l == objName:
+				x1, x2, y1, y2 = int(box.x1*w), int(box.x2*w), int(box.y1*h), int(box.y2*h)
+				object_points = [[x1, y1], [x2, y1], [x2, y2], [x1, y2]]
+				p = Polygon(object_points)
+				q = Polygon(area_points)
+				if p.intersects(q) == True:
+					exist_num = exist_num + 1
+				if display == True:
+					size = cv2.getTextSize(l, face, scale, thickness+1)
+					cv2.rectangle(img, (x1, y1), (x2, y2), (255, 255, 0), thickness)
+					cv2.rectangle(img, (x1, y1), (x1+size[0][0], y1+size[0][1]+size[1]), (255, 255, 255), -1)
+					cv2.putText(img, l, (x1, y1 + size[0][1]), face, scale, (0, 0, 255), thickness+1)
 	if limit_num >= 0:
 		if exist_num != limit_num:
 			alert = True
@@ -212,6 +214,12 @@ class GeoCheck(Gst.Element):
 				# write alert metadata into admetadata by making a fake box
 				currentTimeString = "<" + datetime.now().strftime("%Y-%m-%d %H:%M:%S") + ">"
 				messsageStr = "," + self.alert_type + currentTimeString
+				arr = []
+				arr.append(admeta._DetectionBox(0, 0, 0, 0,0.1,0.2,0.3,0.4,0.5, messsageStr))
+				admeta.set_detection_box(buff, pad, arr)
+
+			else:
+				messsageStr ="none"
 				arr = []
 				arr.append(admeta._DetectionBox(0, 0, 0, 0,0.1,0.2,0.3,0.4,0.5, messsageStr))
 				admeta.set_detection_box(buff, pad, arr)
