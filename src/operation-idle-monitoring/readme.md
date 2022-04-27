@@ -7,10 +7,8 @@ Operation idle monitor, OIM, is a quite useful weapon in measuring the productio
 Follow the command below to clone the repository:
 
 ```
-$ git clone http://GitLab.Adlinktech.com/paul.lin/ai-quick-start-suite.git
+$ git clone https://github.com/IST-EVA-Support/ai-quick-start-suite.git
 ```
-
-This might required you to input your adlink account and password. If you do not have the permission, please contact to paul.lin@adlinktech.com.
 
 ## Algorithm Description
 
