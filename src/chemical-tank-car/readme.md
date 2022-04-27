@@ -7,10 +7,8 @@ Security check is one of the most concerned issue in manufacture, especially for
 Follow the command below to clone the repository:
 
 ```
-$ git clone http://GitLab.Adlinktech.com/paul.lin/ai-quick-start-suite.git
+$ git clone https://github.com/IST-EVA-Support/ai-quick-start-suite.git
 ```
-
-This might required you to input your adlink account and password. If you do not have the permission, please contact to paul.lin@adlinktech.com.
 
 ## Algorithm Description
 
