@@ -1,0 +1,8 @@
+well-dressed
+irregular-dressed
+fire-extinguisher
+traffic-cones-irregular
+traffic-cones-regular
+error-glove
+error-helmet
+tank-car
