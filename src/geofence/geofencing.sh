@@ -21,6 +21,10 @@ get_script_dir () {
     echo "$DIR"
 }
 
+# Download AI model for Neon-JNX 
+wget https://sftp.adlinktech.com/image/Neon-JNX/yolov4-416-fp16.engine
+mv yolov4-416-fp16.engine NX
+
 # geocheck
 # if the python plugin is already exist in eva plugins python folder, remove it
 message_out "check eva plugings folder..."
