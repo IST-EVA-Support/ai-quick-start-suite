@@ -1,0 +1,5 @@
+convert onnx:
+/usr/src/tensorrt/bin/trtexec --onnx=yolov4-tiny-608.onnx --workspace=3000 --maxBatch=1 --verbose --saveEngine=yolov4-tiny-608.engine
+
+run yolov4-tiny-608:
+gst-launch-1.0 filesrc location=Data/front.mp4 ! decodebin ! nvvideoconvert ! videoconvert ! videoscale ! video/x-raw, width=960, height=540 ! adrt model=NX/yolov4-tiny-608.engine scale=0.004 mean="0 0 0" rgbconv=true ! adtrans_yolo label=NX/label.txt input-width=608 input-height=608 blob-size="19,38" mask="(3,4,5),(1,2,3)" anchor="(10,14),(23,27),(37,58),(81,82),(135,169),(344,319)" class-num=1 use-sigmoid=True ! geocheck alert-area-def=NX/area.txt object-name=foot ! email_alert alert-type=alert receiver-address=paul.lin@adlinktech.com ! videoconvert ! ximagesink sync=false
