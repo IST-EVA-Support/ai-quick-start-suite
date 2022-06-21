@@ -22,8 +22,8 @@ get_script_dir () {
 }
 
 # Download AI model for Neon-JNX 
-wget https://sftp.adlinktech.com/image/Neon-JNX/yolov4-416-fp16.engine
-mv yolov4-416-fp16.engine NX
+wget https://sftp.adlinktech.com/image/Neon-JNX/yolov4-416-fp16.zip
+mv yolov4-416-fp16.zip NX/yolov4-416-fp16.engine
 
 # geocheck
 # if the python plugin is already exist in eva plugins python folder, remove it
