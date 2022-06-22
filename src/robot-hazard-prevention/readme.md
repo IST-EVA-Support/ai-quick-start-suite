@@ -35,7 +35,7 @@ For Neon-JT2 / Neon-JNO
 ```
 $ /usr/src/tensorrt/bin/trtexec --onnx=/home/adlink/Downloads/ai-quick-start-suite/src/robot-hazard-prevention/misc/yolov4-tiny-608.onnx --buildOnly \
 --saveEngine=/home/adlink/Downloads/ai-quick-start-suite/src/robot-hazard-prevention/misc/yolov4-tiny-608.engine \
---maxBatch=4 --fp16 --workspace=3000 --verboase
+--maxBatch=4 --fp16 --workspace=3000 --verbose
 ``` 
 
 

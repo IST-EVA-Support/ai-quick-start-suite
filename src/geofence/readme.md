@@ -8,8 +8,8 @@ Security check is one of the most concerned issue in manufacture, especially for
 Follow the command below to clone the repository:
 
 ```
-$ git clone https://github.com/IST-EVA-Support/ai-quick-start-suite.git
-$ mv ai-quick-start-suite ~/Downloads
+ git clone https://github.com/IST-EVA-Support/ai-quick-start-suite.git
+ mv ai-quick-start-suite ~/Downloads
 ```
 
 ## Algorithm Description
@@ -27,7 +27,7 @@ This scenario required to install EVASDK in the device. After installing the EVA
 1. Path to the folder of this scenario. Assume that you clone this source code in Home folder.
 
    ```
-   $ cd ~/Downloads/ai-quick-start-suite/src/geofence
+    cd ~/Downloads/ai-quick-start-suite/src/geofence
    ```
 
    If you clone in another path, please path to folder "geofence".
@@ -35,7 +35,7 @@ This scenario required to install EVASDK in the device. After installing the EVA
 2. Make the build script executable if needed.
 
    ```
-   $ sudo chmod +x geofencing.sh
+    sudo chmod +x geofencing.sh
    ```
 
    This step is just make sure you have the execute permission for this script.
@@ -43,7 +43,7 @@ This scenario required to install EVASDK in the device. After installing the EVA
 3. Run the build script and then install to your device.
 
    ```
-   $ ./geofence.sh
+    ./geofencing.sh
    ```
 
    After run this build script, the plugin will be copied to EVASDK relative folder then clean the GStreamer cache as well.
@@ -53,13 +53,13 @@ This scenario required to install EVASDK in the device. After installing the EVA
    for plugin metadata:
 
    ```
-   $ gst-inspect-1.0 python
+     gst-inspect-1.0 python
    ```
 
    for element metadata:
 
    ```
-   $ gst-inspect-1.0 geocheck
+     gst-inspect-1.0 geocheck
    ```
 
 This plugin, geocheck, contains one feature called geocheck. you can use the command to see the detail in terminal after built.
@@ -71,13 +71,13 @@ There exists one test optimized models for JNX(NVIDIA NX) in /ai-quick-start-sui
 1. yolov4-tiny-608.engine for pose detection
 
    (if you are using other architecture, you can optimize it through EVASDK user manual by using /ai-quick-start-suite/src/geofence/misc/yolov4-tiny-608.onnx)
-   Convert onnx model as by tensorrt. Refer to portal[https://eva-support.adlinktech.com/docs/yolov4nbsp] for more detail.
+   Convert onnx model as by tensorrt. Refer to [portal|https://eva-support.adlinktech.com/docs/yolov4nbsp] for more detail.
 
 For Neon-JT2 / Neon-JNO
 ```
-$ /usr/src/tensorrt/bin/trtexec --onnx=/home/adlink/Downloads/ai-quick-start-suite/src/geofence/misc/yolov4-416.onnx \
---buildOnly --saveEngine=/home/adlink/Downloads/ai-quick-start-suite/src/geofence/misc/yolov4-416.engine \
---maxBatch=4 --fp16  --workspace=3000 --verboase
+/usr/src/tensorrt/bin/trtexec --onnx=/home/adlink/Downloads/ai-quick-start-suite/src/geofence/misc/yolov4-416.onnx \
+--buildOnly --saveEngine=/home/adlink/Downloads/ai-quick-start-suite/src/geofence/misc/yolov4-416-fp16.engine \
+--maxBatch=4 --fp16  --workspace=3000 --verbose
 ``` 
 
 and other required materials needed in /ai-quick-start-suite/src/geofence/NX:
@@ -95,17 +95,17 @@ Test videos are located in [Data](./Data) folder. The videos are used for testin
 For running this plugin, run the command below for testing:
 For Neon-NX
 ```
-$ gst-launch-1.0 filesrc location="/home/adlink/Downloads/ai-quick-start-suite/src/geofence/Data/factory.mp4" ! qtdemux ! h264parse ! avdec_h264 ! videoconvert ! adrt model="/home/adlink/Downloads/ai-quick-start-suite/src/geofence/NX/yolov4-416-fp16.engine" device=0 scale=0.004 mean="0 0 0" rgbconv=True ! adtrans_yolo threshold=0.5 label="/home/adlink/Downloads/ai-quick-start-suite/src/geofence/NX/yolo_RT_labels.txt" use-sigmoid=True ! geocheck alert-area-def="/home/adlink/Downloads/ai-quick-start-suite/src/geofence/NX/area.txt" object-name="person" ! videoconvert ! xvimagesink sync=Ture
+gst-launch-1.0 filesrc location="/home/adlink/Downloads/ai-quick-start-suite/src/geofence/Data/factory.mp4" ! qtdemux ! h264parse ! avdec_h264 ! videoconvert ! adrt model="/home/adlink/Downloads/ai-quick-start-suite/src/geofence/NX/yolov4-416-fp16.engine" device=0 scale=0.004 mean="0 0 0" rgbconv=True ! adtrans_yolo threshold=0.5 label="/home/adlink/Downloads/ai-quick-start-suite/src/geofence/NX/yolo_RT_labels.txt" use-sigmoid=True ! geocheck alert-area-def="/home/adlink/Downloads/ai-quick-start-suite/src/geofence/NX/area.txt" object-name="person" ! videoconvert ! xvimagesink sync=true
 ```
 
 For Neon-JT2 / Neon-JNO
 ```
-$ gst-launch-1.0 filesrc location="/home/adlink/Downloads/ai-quick-start-suite/src/geofence/Data/factory.mp4" ! qtdemux ! h264parse ! avdec_h264 ! videoconvert ! adrt model="/home/adlink/Downloads/ai-quick-start-suite/src/geofence/misc/yolov4-416-fp16.engine" device=0 scale=0.004 mean="0 0 0" rgbconv=True ! adtrans_yolo threshold=0.5 label="/home/adlink/Downloads/ai-quick-start-suite/src/geofence/NX/yolo_RT_labels.txt" use-sigmoid=True ! geocheck alert-area-def="/home/adlink/Downloads/ai-quick-start-suite/src/geofence/NX/area.txt" object-name="person" ! videoconvert ! xvimagesink sync=Ture
+gst-launch-1.0 filesrc location="/home/adlink/Downloads/ai-quick-start-suite/src/geofence/Data/factory.mp4" ! qtdemux ! h264parse ! avdec_h264 ! videoconvert ! adrt model="/home/adlink/Downloads/ai-quick-start-suite/src/geofence/misc/yolov4-416-fp16.engine" device=0 scale=0.004 mean="0 0 0" rgbconv=True ! adtrans_yolo threshold=0.5 label="/home/adlink/Downloads/ai-quick-start-suite/src/geofence/NX/yolo_RT_labels.txt" use-sigmoid=True ! geocheck alert-area-def="/home/adlink/Downloads/ai-quick-start-suite/src/geofence/NX/area.txt" object-name="person" ! videoconvert ! xvimagesink sync=true
 ```
 
 You will see the following result displayed:
 
-![displayed screen](../../resources/tankcar-event.jpg)
+![displayed screen](../../resources/geofence.png)
 
-Illustrated red area denotes the pre-defied ara provide by user. The object "traffic-cones-irregular" is the target that can not occur in the area. This object name can set in the property, object-name, of the plugin. The other property, limit-num, can set the object number that can or cannot appear in the area.  The limit-num = 0 means cannot exist the object; limit-num > 0 means can exist specific number of the object. This scenario can widly extended to any situation that illegal object is trained in the model and check whether it is appear in the area or not.
+Illustrated red area denotes the pre-defied ara provide by user. The object "person" is the target that can not occur in the area. This object name can set in the property, object-name, of the plugin. The other property, limit-num, can set the object number that can or cannot appear in the area.  The limit-num = 0 means cannot exist the object; limit-num > 0 means can exist specific number of the object. This scenario can widly extended to any situation that illegal object is trained in the model and check whether it is appear in the area or not.
 
