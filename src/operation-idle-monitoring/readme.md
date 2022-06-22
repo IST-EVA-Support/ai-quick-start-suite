@@ -3,11 +3,13 @@
 Operation idle monitor, OIM, is a quite useful weapon in measuring the production capacity.
 
 ## Clone the repository
+### The samples path are designed at ~/Downloads
 
 Follow the command below to clone the repository:
 
 ```
 $ git clone https://github.com/IST-EVA-Support/ai-quick-start-suite.git
+$ mv ai-quick-start-suite ~/Downloads
 ```
 
 ## Algorithm Description
@@ -25,7 +27,7 @@ This scenario required to install EVASDK in the device. After installing the EVA
 1. Path to the folder of this scenario. Assume that you clone this source code in Home folder.
 
    ```
-   $ cd ~/ai-quick-start-suite/src/operation-idle-monitoring
+   $ cd ~/Downloads/ai-quick-start-suite/src/operation-idle-monitoring
    ```
 
    If you clone in another path, please path to folder "operation-idle-monitoring".
