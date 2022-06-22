@@ -76,8 +76,9 @@ There exists one test optimized models for JNX(NVIDIA NX) in /ai-quick-start-sui
 
 For Neon-JT2 / Neon-JNO
 ```
-$ trtexec --onnx=~/Downloads/ai-quick-start-suite/src/ai-safety/misc/yolov4-tiny-608.onnx \
---buildOnly --saveEngine=~/Downloads/ai-quick-start-suite/src/ai-safety/misc/yolov4-tiny-608.engine --maxBatch=1 --fp16
+$ /usr/src/tensorrt/bin/trtexec --onnx=/home/adlink/Downloads/ai-quick-start-suite/src/ai-safety/misc/yolov4-tiny-608.onnx \
+--buildOnly --saveEngine=/home/adlink/Downloads/ai-quick-start-suite/src/ai-safety/misc/yolov4-tiny-608.engine \
+ --maxBatch=4 --fp16 --workspace=3000 --verboase
 ```
 
 and other required materials needed in /ai-quick-start-suite/src/ai-safety/NX:

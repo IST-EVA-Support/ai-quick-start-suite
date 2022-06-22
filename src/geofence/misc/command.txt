@@ -1,5 +1,7 @@
 convert onnx:
-/usr/src/tensorrt/bin/trtexec --onnx=yolov4-tiny-608.onnx --workspace=3000 --maxBatch=1 --verbose --saveEngine=yolov4-tiny-608.engine
+/usr/src/tensorrt/bin/trtexec --onnx=/home/adlink/Downloads/ai-quick-start-suite/src/geofence/misc/yolov4-416.onnx \
+--buildOnly --saveEngine=/home/adlink/Downloads/ai-quick-start-suite/src/geofence/misc/yolov4-416.engine \
+--maxBatch=4 --fp16  --workspace=3000 --verboase
 
-run yolov4-tiny-608:
-gst-launch-1.0 filesrc location=Data/4-4.MP4 ! decodebin ! nvvideoconvert ! videoconvert ! adrt model=NX/yolov4-tiny-608.engine scale=0.004 mean="0 0 0" rgbconv=true ! adtrans_yolo label=NX/label.txt input-width=608 input-height=608 blob-size="19,38" mask="(3,4,5),(1,2,3)" anchor="(10,14),(23,27),(37,58),(81,82),(135,169),(344,319)" class-num=8 use-sigmoid=True ! geocheck alert-area-def=NX/area.txt object-name=traffic-cones-irregular ! email_alert alert-type=alert receiver-address=paul.lin@adlinktech.com ! videoconvert ! ximagesink sync=false
+run yolov4-416:
+gst-launch-1.0 filesrc location="/home/adlink/Downloads/ai-quick-start-suite/src/geofence/Data/factory.mp4" ! qtdemux ! h264parse ! avdec_h264 ! videoconvert ! adrt model="/home/adlink/Downloads/ai-quick-start-suite/src/geofence/NX/yolov4-416-fp16.engine" device=0 scale=0.004 mean="0 0 0" rgbconv=True ! adtrans_yolo threshold=0.5 label="/home/adlink/Downloads/ai-quick-start-suite/src/geofence/NX/yolo_RT_labels.txt" use-sigmoid=True ! geocheck alert-area-def="/home/adlink/Downloads/ai-quick-start-suite/src/geofence/NX/area.txt" object-name="person" ! videoconvert ! xvimagesink sync=Ture
