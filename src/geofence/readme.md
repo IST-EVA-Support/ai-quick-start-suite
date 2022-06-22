@@ -9,6 +9,9 @@ Follow the command below to clone the repository:
 
 ```
  git clone https://github.com/IST-EVA-Support/ai-quick-start-suite.git
+```
+
+```
  mv ai-quick-start-suite ~/Downloads
 ```
 
@@ -71,7 +74,7 @@ There exists one test optimized models for JNX(NVIDIA NX) in /ai-quick-start-sui
 1. yolov4-tiny-608.engine for pose detection
 
    (if you are using other architecture, you can optimize it through EVASDK user manual by using /ai-quick-start-suite/src/geofence/misc/yolov4-tiny-608.onnx)
-   Convert onnx model as by tensorrt. Refer to [portal|https://eva-support.adlinktech.com/docs/yolov4nbsp] for more detail.
+   Convert onnx model as by tensorrt. Refer to [portal](https://eva-support.adlinktech.com/docs/yolov4nbsp) for more detail.
 
 For Neon-JT2 / Neon-JNO
 ```
