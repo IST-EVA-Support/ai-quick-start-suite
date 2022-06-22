@@ -43,7 +43,7 @@ This scenario required to install EVASDK in the device. After installing the EVA
 3. Run the build script and then install to your device.
 
    ```
-   $ ./geofencing.sh
+   $ ./geofence.sh
    ```
 
    After run this build script, the plugin will be copied to EVASDK relative folder then clean the GStreamer cache as well.
@@ -75,8 +75,9 @@ There exists one test optimized models for JNX(NVIDIA NX) in /ai-quick-start-sui
 
 For Neon-JT2 / Neon-JNO
 ```
-$ trtexec --onnx=~/Downloads/ai-quick-start-suite/src/geofence/misc/yolov4-tiny-608.onnx \
---buildOnly --saveEngine=~/Downloads/ai-quick-start-suite/src/geofence/misc/yolov4-tiny-608.engine --maxBatch=1 --fp16
+$ /usr/src/tensorrt/bin/trtexec --onnx=/home/adlink/Downloads/ai-quick-start-suite/src/geofence/misc/yolov4-416.onnx \
+--buildOnly --saveEngine=/home/adlink/Downloads/ai-quick-start-suite/src/geofence/misc/yolov4-416.engine \
+--maxBatch=4 --fp16  --workspace=3000 --verboase
 ``` 
 
 and other required materials needed in /ai-quick-start-suite/src/geofence/NX:
@@ -94,12 +95,12 @@ Test videos are located in [Data](./Data) folder. The videos are used for testin
 For running this plugin, run the command below for testing:
 For Neon-NX
 ```
-$ gst-launch-1.0 filesrc location=Data/4-4.MP4 ! decodebin ! nvvideoconvert ! videoconvert ! adrt model=NX/yolov4-tiny-608.engine scale=0.004 mean="0 0 0" rgbconv=true ! adtrans_yolo label=NX/label.txt input-width=608 input-height=608 blob-size="19,38" mask="(3,4,5),(1,2,3)" anchor="(10,14),(23,27),(37,58),(81,82),(135,169),(344,319)" class-num=8 use-sigmoid=True ! geocheck alert-area-def=NX/area.txt object-name=traffic-cones-irregular ! videoconvert ! ximagesink sync=false
+$ gst-launch-1.0 filesrc location="/home/adlink/Downloads/ai-quick-start-suite/src/geofence/Data/factory.mp4" ! qtdemux ! h264parse ! avdec_h264 ! videoconvert ! adrt model="/home/adlink/Downloads/ai-quick-start-suite/src/geofence/NX/yolov4-416-fp16.engine" device=0 scale=0.004 mean="0 0 0" rgbconv=True ! adtrans_yolo threshold=0.5 label="/home/adlink/Downloads/ai-quick-start-suite/src/geofence/NX/yolo_RT_labels.txt" use-sigmoid=True ! geocheck alert-area-def="/home/adlink/Downloads/ai-quick-start-suite/src/geofence/NX/area.txt" object-name="person" ! videoconvert ! xvimagesink sync=Ture
 ```
 
 For Neon-JT2 / Neon-JNO
 ```
-$ gst-launch-1.0 filesrc location=Data/4-4.MP4 ! decodebin ! nvvideoconvert ! videoconvert ! adrt model=misc/yolov4-tiny-608.engine scale=0.004 mean="0 0 0" rgbconv=true ! adtrans_yolo label=NX/label.txt input-width=608 input-height=608 blob-size="19,38" mask="(3,4,5),(1,2,3)" anchor="(10,14),(23,27),(37,58),(81,82),(135,169),(344,319)" class-num=8 use-sigmoid=True ! geocheck alert-area-def=NX/area.txt object-name=traffic-cones-irregular ! videoconvert ! ximagesink sync=false
+$ gst-launch-1.0 filesrc location="/home/adlink/Downloads/ai-quick-start-suite/src/geofence/Data/factory.mp4" ! qtdemux ! h264parse ! avdec_h264 ! videoconvert ! adrt model="/home/adlink/Downloads/ai-quick-start-suite/src/geofence/misc/yolov4-416-fp16.engine" device=0 scale=0.004 mean="0 0 0" rgbconv=True ! adtrans_yolo threshold=0.5 label="/home/adlink/Downloads/ai-quick-start-suite/src/geofence/NX/yolo_RT_labels.txt" use-sigmoid=True ! geocheck alert-area-def="/home/adlink/Downloads/ai-quick-start-suite/src/geofence/NX/area.txt" object-name="person" ! videoconvert ! xvimagesink sync=Ture
 ```
 
 You will see the following result displayed:

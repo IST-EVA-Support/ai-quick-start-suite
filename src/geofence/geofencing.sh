@@ -22,8 +22,11 @@ get_script_dir () {
 }
 
 # Download AI model for Neon-JNX 
-wget https://sftp.adlinktech.com/image/Neon-JNX/yolov4-416-fp16.zip
-mv yolov4-416-fp16.zip NX/yolov4-416-fp16.engine
+wget https://sftp.adlinktech.com/image/onnx/yolov4-416-fp16.engine.zip
+mv yolov4-416-fp16.engine.zip NX/yolov4-416-fp16.engine
+# Download AI onnx model
+wget https://sftp.adlinktech.com/image/onnx/yolov4-416.onnx.zip
+mv yolov4-416.onnx.zip misc/yolov4-416.onnx
 
 # geocheck
 # if the python plugin is already exist in eva plugins python folder, remove it
@@ -76,24 +79,6 @@ fi
 message_out "start copying to /opt/adlink/eva/plugins/python ......"
 sudo cp ./Plugin/emailAlert.py /opt/adlink/eva/plugins/python/.
 message_out "copy done"
-
-#voice Alert
-# if the python plugin is already exist in eva plugins python folder, remove it
-message_out "check eva plugings folder..."
-if [ -f "/opt/adlink/eva/plugins/python/voiceAlert.py" ]
-then
-    message_out "/opt/adlink/eva/plugins/python/voiceAlert.py exist, will remove it first."
-    sudo rm /opt/adlink/eva/plugins/python/voiceAlert.py
-    message_out "voiceAlert.py is removed."
-else
-    message_out "/opt/adlink/eva/plugins/python/voiceAlert.py does not exist, will copy it"
-fi
-
-# copy python plugin to eva plugins python folder
-message_out "start copying to /opt/adlink/eva/plugins/python ......"
-sudo cp ./Plugin/voiceAlert.py /opt/adlink/eva/plugins/python/.
-message_out "copy done"
-
 
 # clear cache of gstreamer
 message_out "clear cache of gstreamer..."
